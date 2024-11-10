@@ -1,0 +1,150 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeechSynth: Voice-to-Text</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>SpeechSynth: Voice-to-Text</h1>
+
+        <form id="audio-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="audio-file" name="audio" accept="audio/*" required>
+            <button type="submit">Upload and Transcribe</button>
+        </form>
+        <div id="result">
+            <h2>Transcription:</h2>
+            <p id="transcription-output"></p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('audio-form');
+        const transcriptionOutput = document.getElementById('transcription-output');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const audioFile = document.getElementById('audio-file').files[0];
+            formData.append('audio', audioFile);
+
+            // Get the CSRF token from the hidden input
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            try {
+                const response = await fetch('/transcribe/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken // Include CSRF token in header
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                transcriptionOutput.textContent = data.transcription || `Error: ${data.error}`;
+            } catch (error) {
+                transcriptionOutput.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
+-->
+
+
+<!--NEW UI-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeechSynth: Voice-to-Text</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            color: #007bff;
+        }
+        #result {
+            margin-top: 20px;
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        #transcription-output {
+            font-size: 1.1rem;
+            color: #495057;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>SpeechSynth: Voice-to-Text</h1>
+        <!-- CSRF token is included inside a hidden input -->
+        <form id="audio-form" enctype="multipart/form-data" class="mt-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" id="audio-file" name="audio" accept="audio/*" required class="form-control-file">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload and Transcribe</button>
+        </form>
+        <div id="result" class="mt-4">
+            <h2>Transcription:</h2>
+            <p id="transcription-output" class="font-italic">Your transcription will appear here...</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap and custom JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const form = document.getElementById('audio-form');
+        const transcriptionOutput = document.getElementById('transcription-output');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            const audioFile = document.getElementById('audio-file').files[0];
+            formData.append('audio', audioFile);
+
+            // Get the CSRF token from the hidden input
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            try {
+                const response = await fetch('/transcribe/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken // Include CSRF token in header
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+                transcriptionOutput.textContent = data.transcription || `Error: ${data.error}`;
+            } catch (error) {
+                transcriptionOutput.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
